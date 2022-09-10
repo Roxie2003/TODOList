@@ -1,23 +1,17 @@
-const express=require("express")
+const express=require("express");
+const { getDate,getDay } = require("./date");
 const app=express()
+
 
 app.set('view engine','ejs');
 app.use(express.urlencoded({extended:true}));
 app.use(express.static("public"))
-let items=['Buy food','Cook food','Eat food'];
-let clgItems=[];
+
+const items=['Buy food','Cook food','Eat food'];
+const clgItems=[];
+
 app.get("/",(req,res)=>{
-    let today=new Date();
-     let options={
-        weekday:"long",
-        day:"numeric",
-        month:"long"
-     };
-
-     let day=today.toLocaleDateString("en-US",options);
-
-     res.render("list",{listTitle:day, items
-     });
+    res.render("list",{listTitle:getDate(), items});
 });
 
 app.post("/",(req,res)=>{
@@ -27,7 +21,7 @@ app.post("/",(req,res)=>{
     if(list==="College")
     {
         clgItems.push(item);
-        res.redirect("/College");
+        res.redirect("/college");
     }    
     else
     {
@@ -37,11 +31,11 @@ app.post("/",(req,res)=>{
     
 });
 
-app.get("/College",(req,res)=>{
+app.get("/college",(req,res)=>{
     res.render("list",{listTitle:"College Tasks",items:clgItems});
 })
 
-app.get("/About",(req,res)=>{
+app.get("/about",(req,res)=>{
     res.render("about");
 })
 
